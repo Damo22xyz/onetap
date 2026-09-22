@@ -400,19 +400,6 @@ end
 gameText:GetPropertyChangedSignal("AbsoluteSize"):Connect(alignTitle)
 alignTitle()
 
-local resizeHandle = new("TextButton", {
-    Name = "ResizeHandle",
-    Size = UDim2.fromOffset(20, 20),
-    Position = UDim2.new(1, -24, 0, 16),
-    BackgroundTransparency = 1,
-    AutoButtonColor = false,
-    Text = "◢",
-    Font = Enum.Font.GothamBold,
-    TextSize = 13,
-    TextColor3 = theme.muted,
-    ZIndex = 2
-}, top)
-
 local content = new("Frame", {
     Name = "Content",
     Size = UDim2.new(1, 0, 1, -48),
@@ -500,20 +487,9 @@ end)
 local dragging = false
 local dragStart
 local startPos
-local resizing = false
-local resizeStart
-local sizeStart
-
-resizeHandle.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        resizing = true
-        resizeStart = input.Position
-        sizeStart = main.Size
-    end
-end)
 
 top.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 and not resizing then
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
         dragging = true
         dragStart = input.Position
         startPos = main.Position
@@ -523,17 +499,11 @@ end)
 top.InputEnded:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 then
         dragging = false
-        resizing = false
     end
 end)
 
 UserInputService.InputChanged:Connect(function(input)
-    if resizing and input.UserInputType == Enum.UserInputType.MouseMovement then
-        local delta = input.Position - resizeStart
-        local width = math.max(500, sizeStart.X.Offset + delta.X)
-        local height = math.max(350, sizeStart.Y.Offset + delta.Y)
-        main.Size = UDim2.fromOffset(width, height)
-    elseif dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
         local delta = input.Position - dragStart
         main.Position = UDim2.new(
             startPos.X.Scale,
@@ -2179,6 +2149,10 @@ function library:SetTab(tab)
     library.CurrentTab = tab
 end
 
-local Players = game:GetService("Players")
+library.Theme = theme
+library.New = new
+library.Main = main
+library.Top = top
+library.Sidebar = sidebar
 
 return library
