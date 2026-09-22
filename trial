@@ -307,55 +307,6 @@ local titleContainer = new("Frame", {
     BackgroundTransparency = 1
 }, top)
 
-local userContainer = new("Frame", {
-    Name = "UserContainer",
-    Size = UDim2.fromOffset(178, 48),
-    Position = UDim2.new(1, -173, 0, 0),
-    BackgroundTransparency = 1,
-    ZIndex = 3
-}, top)
-
-local userAvatar = new("ImageLabel", {
-    Name = "Avatar",
-    Size = UDim2.fromOffset(28, 28),
-    Position = UDim2.fromOffset(0, 10),
-    BackgroundColor3 = theme.panel3,
-    BorderSizePixel = 0,
-    ZIndex = 3
-}, userContainer)
-
-new("UICorner", {
-    CornerRadius = UDim.new(1, 0)
-}, userAvatar)
-
-local userName = new("TextLabel", {
-    Name = "Username",
-    Size = UDim2.new(1, -36, 1, 0),
-    Position = UDim2.fromOffset(36, 0),
-    BackgroundTransparency = 1,
-    Text = player.Name,
-    Font = Enum.Font.GothamSemibold,
-    TextSize = 11,
-    TextColor3 = theme.subtext,
-    TextXAlignment = Enum.TextXAlignment.Left,
-    TextYAlignment = Enum.TextYAlignment.Center,
-    TextTruncate = Enum.TextTruncate.AtEnd,
-    ZIndex = 3
-}, userContainer)
-
-task.spawn(function()
-    local success, content = pcall(function()
-        return Players:GetUserThumbnailAsync(
-            player.UserId,
-            Enum.ThumbnailType.HeadShot,
-            Enum.ThumbnailSize.Size48x48
-        )
-    end)
-    if success then
-        userAvatar.Image = content
-    end
-end)
-
 local titleIcon = new("ImageLabel", {
     Name = "OneTapIcon",
     Size = UDim2.fromOffset(48, 48),
